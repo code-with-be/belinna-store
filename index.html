@@ -2,63 +2,35 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Belinna Store | Sua Essência, Seu Brilho</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <title>Belinna Store</title>
 </head>
 <body>
 
-    <div class="top-banner">
-        Atendimento exclusivo pelo WhatsApp | Envio para todo o Brasil 🇧🇷
-    </div>
+    <div class="top-banner">Atendimento exclusivo pelo WhatsApp | Envio para todo o Brasil 🇧🇷</div>
 
-    <header>
-        <div class="logo-container">
-            <h1>Belinna Store</h1>
-            <p class="subtitle">Sua beleza já existe, nossa missão é apenas realça-la!</p>
-        </div>
-    </header>
-
-    <main class="main-content">
-        <!-- Grid de Seções -->
-        <div class="home-grid">
-            <div class="channel-card" onclick="window.location.hash='makes'">
-                <h2>Maquiagens</h2>
-                <p>Produtos selecionados para realçar seus traços.</p>
+    <main class="products-grid">
+        <!-- Exemplo de Produto Completo -->
+        <div class="product-card">
+            <h3>Batom Matte Velvet Rosé</h3>
+            <div class="product-details">
+                <p><strong>Marca:</strong> Belinna Beauty</p>
+                <p><strong>Tamanho:</strong> 4g</p>
+                <p><strong>Uso:</strong> Aplicar nos lábios conforme necessário.</p>
+                <p><strong>Onde usar:</strong> Ocasiões diárias ou noturnas.</p>
             </div>
-            <!-- Adicione outros cards aqui se desejar -->
+            <p><strong>R$ 89,90</strong></p>
+            <button onclick="adicionarAoCarrinho('Batom Matte Velvet Rosé', 89.90)">Adicionar ao Carrinho</button>
         </div>
-
-        <!-- Seção Exemplo -->
-        <section id="makes" class="spa-section">
-            <h2>Linha de Maquiagens</h2>
-            <div class="products-grid" style="display: grid; gap: 15px;">
-                <div class="product-item">
-                    <h3>Batom Matte Velvet</h3>
-                    <span>R$ 89,90</span>
-                    <button onclick="adicionarAoCarrinho('Batom Matte Velvet', 89.90)">Adicionar</button>
-                </div>
-            </div>
-        </section>
     </main>
 
-    <!-- Botão do Carrinho -->
-    <button onclick="toggleCarrinho()" style="position: fixed; bottom: 20px; right: 20px; padding: 15px; border-radius: 50%; border: none; background: #B76E79; color: white; cursor: pointer;">
-        🛒 <span id="cart-count">0</span>
-    </button>
-
-    <!-- Carrinho Lateral -->
+    <!-- Carrinho -->
     <div class="side-cart" id="side-cart">
-        <div class="cart-header">
-            <h3>Seu Carrinho</h3>
-            <button onclick="toggleCarrinho()">×</button>
-        </div>
-        <div class="cart-items-container" id="cart-items"></div>
-        <div class="cart-footer">
-            <p>Total: <span id="cart-total-value">R$ 0,00</span></p>
-            <button class="checkout-btn" onclick="enviarPedidoWhatsApp()">Enviar Pedido via WhatsApp 📱</button>
-        </div>
+        <h3>Seu Carrinho</h3>
+        <div id="cart-items"></div>
+        <p><strong>Total: <span id="cart-total">R$ 0,00</span></strong></p>
+        <button onclick="enviarWhatsApp()">Finalizar no WhatsApp 📱</button>
+        <button onclick="toggleCarrinho()">Fechar</button>
     </div>
 
     <script>
@@ -67,53 +39,41 @@
         function toggleCarrinho() { document.body.classList.toggle('cart-open'); }
 
         function adicionarAoCarrinho(nome, preco) {
-            const item = carrinho.find(i => i.nome === nome);
-            if (item) item.quantidade += 1;
-            else carrinho.push({ nome, preco, quantidade: 1 });
-            atualizarInterface();
+            let item = carrinho.find(i => i.nome === nome);
+            if (item) item.qtd++;
+            else carrinho.push({ nome, preco, qtd: 1 });
+            renderizarCarrinho();
         }
 
-        function alterarQuantidade(index, delta) {
-            carrinho[index].quantidade += delta;
-            if (carrinho[index].quantidade <= 0) carrinho.splice(index, 1);
-            atualizarInterface();
+        function alterarQtd(index, delta) {
+            carrinho[index].qtd += delta;
+            if (carrinho[index].qtd <= 0) carrinho.splice(index, 1);
+            renderizarCarrinho();
         }
 
-        function removerDoCarrinho(index) {
-            carrinho.splice(index, 1);
-            atualizarInterface();
-        }
-
-        function atualizarInterface() {
-            const container = document.getElementById('cart-items');
-            const totalVal = document.getElementById('cart-total-value');
-            const count = document.getElementById('cart-count');
+        function renderizarCarrinho() {
+            let container = document.getElementById('cart-items');
             container.innerHTML = '';
-            let total = 0, qtd = 0;
-
+            let total = 0;
             carrinho.forEach((item, index) => {
-                total += item.preco * item.quantidade;
-                qtd += item.quantidade;
+                total += item.preco * item.qtd;
                 container.innerHTML += `
-                    <div style="margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px;">
-                        <p>${item.nome} - R$ ${item.preco.toFixed(2).replace('.', ',')}</p>
-                        <div style="display:flex; gap:10px; align-items:center;">
-                            <button onclick="alterarQuantidade(${index}, -1)">-</button>
-                            <span>${item.quantidade}</span>
-                            <button onclick="alterarQuantidade(${index}, 1)">+</button>
-                            <button onclick="removerDoCarrinho(${index})">🗑️</button>
+                    <div class="cart-item">
+                        <span>${item.nome} (${item.qtd}x)</span>
+                        <div>
+                            <button class="btn-qty" onclick="alterarQtd(${index}, -1)">-</button>
+                            <button class="btn-qty" onclick="alterarQtd(${index}, 1)">+</button>
+                            <button onclick="carrinho.splice(${index}, 1); renderizarCarrinho()">🗑️</button>
                         </div>
                     </div>`;
             });
-            totalVal.innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
-            count.innerText = qtd;
+            document.getElementById('cart-total').innerText = `R$ ${total.toFixed(2)}`;
         }
 
-        function enviarPedidoWhatsApp() {
-            if(carrinho.length === 0) return alert("Carrinho vazio!");
-            let msg = "Novo Pedido Belinna Store:\n";
-            carrinho.forEach(i => msg += `${i.quantidade}x ${i.nome}\n`);
-            window.open(`https://api.whatsapp.com/send?phone=5511993610210&text=${encodeURIComponent(msg)}`, '_blank');
+        function enviarWhatsApp() {
+            let msg = "Pedido Belinna Store:%0A";
+            carrinho.forEach(i => msg += `${i.qtd}x ${i.nome}%0A`);
+            window.open(`https://api.whatsapp.com/send?phone=5511993610210&text=${msg}`);
         }
     </script>
 </body>
