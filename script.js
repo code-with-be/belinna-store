@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ========================================================
-    // ATUALIZAR INTERFACE DO CARRINHO
+    // ATUALIZAR INTERFACE DO CARRINHO (COM CONTROLE DE QTD)
     // ========================================================
     function updateCart() {
         cartItemsContainer.innerHTML = "";
@@ -94,13 +94,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 total += itemTotal;
                 totalItems += item.quantity;
 
-                // Cria o HTML de cada item dentro do carrinho lateral
+                // Cria o HTML de cada item com os seletores de diminuir e aumentar
                 const itemElement = document.createElement("div");
                 itemElement.classList.add("cart-item");
                 itemElement.innerHTML = `
                     <div class="cart-item-details">
                         <h4>${item.name}</h4>
-                        <span>${item.quantity}x - R$ ${item.price.toFixed(2).replace(".", ",")}</span>
+                        <div class="cart-item-qty-selector">
+                            <button class="btn-cart-minus" data-id="${item.id}">-</button>
+                            <span class="cart-item-qty">${item.quantity}</span>
+                            <button class="btn-cart-plus" data-id="${item.id}">+</button>
+                            <span class="cart-item-price-unit">x R$ ${item.price.toFixed(2).replace(".", ",")}</span>
+                        </div>
                     </div>
                     <button class="btn-remove-item" data-id="${item.id}">
                         <i class="fa-solid fa-trash-can"></i>
@@ -115,7 +120,41 @@ document.addEventListener("DOMContentLoaded", () => {
         // Atualiza a bolinha vermelha com o número de itens
         cartBadge.textContent = totalItems;
 
-        // Adiciona evento de clique para remover itens individuais
+        // ========================================================
+        // EVENTOS DOS BOTÕES DENTRO DO CARRINHO
+        // ========================================================
+
+        // Botão de DIMINUIR 1 unidade no carrinho
+        document.querySelectorAll(".btn-cart-minus").forEach(button => {
+            button.addEventListener("click", () => {
+                const id = button.getAttribute("data-id");
+                const product = cart.find(item => item.id === id);
+                
+                if (product) {
+                    if (product.quantity > 1) {
+                        product.quantity -= 1; // Se tiver mais de 1, diminui 1
+                    } else {
+                        cart = cart.filter(item => item.id !== id); // Se for 1 e clicar em -, remove do carrinho
+                    }
+                    updateCart(); // Recarrega o carrinho na tela
+                }
+            });
+        });
+
+        // Botão de AUMENTAR 1 unidade no carrinho
+        document.querySelectorAll(".btn-cart-plus").forEach(button => {
+            button.addEventListener("click", () => {
+                const id = button.getAttribute("data-id");
+                const product = cart.find(item => item.id === id);
+                
+                if (product) {
+                    product.quantity += 1;
+                    updateCart();
+                }
+            });
+        });
+
+        // Botão da LIXEIRA (Excluir o produto inteiro)
         document.querySelectorAll(".btn-remove-item").forEach(button => {
             button.addEventListener("click", (e) => {
                 const idToRemove = e.target.closest(".btn-remove-item").getAttribute("data-id");
@@ -150,7 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Codifica o texto para o formato que o link do WhatsApp aceita
         const encodedMessage = encodeURIComponent(message);
-        const whatsappNumber = "5511993610210"; // Número que já estava no seu HTML
+        const whatsappNumber = "5511993610210"; 
 
         // Abre a janela do WhatsApp com a mensagem pronta
         window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, "_blank");
