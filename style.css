@@ -607,3 +607,62 @@ footer {
     width: 100%; 
     margin-top: 40px; 
 }
+
+/* ==========================================
+   ESTILIZAÇÃO DAS REDES SOCIAIS
+   ========================================== */
+.footer-socials {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.footer-socials a {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 20px;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.footer-socials a:hover {
+    color: var(--rose-gold-primary);
+    transform: translateY(-3px);
+}
+
+.about-socials {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(229, 179, 159, 0.2);
+}
+
+.about-socials p {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 15px;
+}
+
+.social-icons-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+.social-link-item {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.3s;
+}
+
+.social-link-item i {
+    font-size: 18px;
+    color: var(--rose-gold-primary);
+}
+
+.social-link-item:hover {
+    color: var(--rose-gold-primary);
+}
