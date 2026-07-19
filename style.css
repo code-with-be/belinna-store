@@ -53,7 +53,7 @@ header {
     padding: 20px 0;
 }
 
-/* CARDS EDITORIAIS COM INTERAÇÃO FORÇADA */
+/* CARDS EDITORIAIS PRINCIPAIS */
 .channel-card {
     background-color: #FDF5F2 !important;
     border: 1px solid #F6ECE7 !important;
@@ -70,7 +70,6 @@ header {
     cursor: pointer !important;
 }
 
-/* Efeito Glow União de Elevação + Sombra de Luz Rosé */
 .channel-card:hover {
     transform: translateY(-8px) !important;
     border-color: #D4A396 !important;
@@ -120,11 +119,7 @@ header {
     text-transform: uppercase;
 }
 
-.channel-card:hover .card-btn {
-    color: #B76E79 !important;
-}
-
-/* LÓGICA SPA COM TRANSIÇÃO SOFT FADE */
+/* LÓGICA SPA */
 .spa-section {
     display: none;
     padding: 40px 20px;
@@ -157,61 +152,70 @@ body:has(#clientes:target) .home-grid {
     font-weight: 500;
 }
 
-/* Vitrine de Produtos & Descrições */
+/* VITRINE EM CARDS DE PRODUTOS LADO A LADO */
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
     margin-top: 30px;
 }
 
 .product-item {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    border: 1px solid #EAE6E1;
+    background: #FFFFFF;
+    border: 1px solid #F6ECE7;
+    border-radius: 14px;
+    padding: 30px 20px;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 280px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .product-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(183, 110, 121, 0.1);
+    border-color: #D4A396;
 }
 
 .product-item h3 {
     font-family: 'Playfair Display', serif;
-    font-size: 1.3rem;
-    margin-bottom: 10px;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #1A1A1A;
+    margin-bottom: 12px;
 }
 
-/* ESTILO DA DESCRIÇÃO DO PRODUTO */
 .product-desc {
     font-size: 0.88rem;
-    color: #777777;
+    color: #666666;
     line-height: 1.5;
     margin-bottom: 15px;
-    min-height: 40px; /* Mantém o alinhamento dos botões parejo */
+    font-weight: 300;
 }
 
 .product-price {
     display: block;
     font-weight: 600;
     color: #B76E79;
-    font-size: 1.1rem;
-    margin-bottom: 15px;
+    font-size: 1.15rem;
+    margin-bottom: 18px;
 }
 
 .add-to-cart {
     background: #1A1A1A;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 20px;
     width: 100%;
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: 8px;
     font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
     transition: background 0.2s ease;
 }
 
@@ -285,7 +289,7 @@ body.cart-open .side-cart {
     justify-content: space-between;
     margin-bottom: 15px;
     font-size: 0.9rem;
-    border-bottom: 1px inherit #FAF8F5;
+    border-bottom: 1px solid #FAF8F5;
     padding-bottom: 8px;
 }
 
