@@ -3,106 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Belinna Store | Vitrine Premium</title>
+    <title>Belinna Store | Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
     <style>
-        :root { --rose: #B76E79; --gold: #D4AF37; --bg: #fdfbf7; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; color: #333; }
+        :root { --rose: #b76e79; --gold: #d4af37; --off-white: #fdfbf7; --text: #4a4a4a; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--off-white); color: var(--text); margin: 0; }
         
-        /* Notificação Elegante */
-        #notification { position: fixed; top: 20px; right: 20px; background: var(--rose); color: white; padding: 15px 25px; border-radius: 50px; display: none; z-index: 2000; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
         
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; padding: 20px; max-width: 1000px; margin: auto; }
-        .card { background: white; padding: 25px; border-radius: 40px; border: 1px solid #eee; transition: 0.3s; text-align: center; }
-        .card:hover { box-shadow: 0 0 20px var(--gold); border: 1px solid var(--gold); }
+        header { text-align: center; padding: 60px 20px; }
+        header h1 { color: var(--rose); font-size: 2.5rem; margin-bottom: 10px; }
         
-        .btn-main { background: var(--rose); color: white; border-radius: 50px; border: none; padding: 10px 25px; cursor: pointer; transition: 0.3s; }
-        .btn-main:hover { background: var(--gold); }
+        .container { max-width: 900px; margin: auto; padding: 20px; }
         
-        #side-cart { position: fixed; top: 0; right: -400px; width: 350px; height: 100%; background: white; box-shadow: -5px 0 15px rgba(0,0,0,0.1); z-index: 1000; padding: 20px; transition: 0.3s; }
-        .cart-open #side-cart { right: 0; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 40px; }
+        
+        .card { background: white; padding: 30px; border-radius: 20px; border: 1px solid #f0e6e6; box-shadow: 0 10px 30px rgba(0,0,0,0.03); transition: 0.4s; text-align: center; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(183, 110, 121, 0.15); }
+        
+        .btn-premium { background: var(--rose); color: white; border: none; padding: 12px 30px; border-radius: 30px; cursor: pointer; transition: 0.3s; font-weight: 600; letter-spacing: 1px; }
+        .btn-premium:hover { background: var(--gold); }
+        
+        .section { display: none; }
+        .active { display: block; }
+        
+        #cart-sidebar { position: fixed; top: 0; right: -400px; width: 350px; height: 100%; background: white; box-shadow: -10px 0 30px rgba(0,0,0,0.1); z-index: 999; padding: 40px; transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1); }
+        .cart-open #cart-sidebar { right: 0; }
+        
+        .qty-input { display: flex; align-items: center; justify-content: center; gap: 15px; margin: 15px 0; }
     </style>
 </head>
 <body>
 
-    <div id="notification">Produto adicionado ao carrinho! ✨</div>
-
-    <header style="text-align: center; padding: 40px;">
-        <h1 style="color: var(--rose);">Belinna Store</h1>
-        <p>Sua beleza em cada detalhe.</p>
+    <header>
+        <h1>Belinna Store</h1>
+        <p>A curadoria que você merece.</p>
     </header>
 
-    <div class="grid">
-        <div class="card">
-            <h2>Sobre Nós</h2>
-            <p>Conheça a essência da Belinna.</p>
-            <div style="margin-top: 15px;">
-                <a href="https://instagram.com/belinna.store" target="_blank">Instagram</a> | 
-                <a href="https://tiktok.com/@belinnastore" target="_blank">TikTok</a> | 
-                <a href="https://wa.me/5511993610210">WhatsApp</a>
+    <div class="container" id="main-content">
+        <div class="grid">
+            <div class="card">
+                <h2>Makes</h2>
+                <p>Acabamento impecável.</p>
+                <button class="btn-premium" onclick="showSection('makes')">Ver Coleção</button>
             </div>
-        </div>
-        <div class="card"><h2>Makes</h2><button class="btn-main" onclick="notify('Explorando Makes...')">Ver Produtos</button></div>
-        <div class="card"><h2>Skincare</h2><button class="btn-main" onclick="notify('Explorando Skincare...')">Ver Produtos</button></div>
-        <div class="card"><h2>Corpo & Cuidados</h2><button class="btn-main" onclick="notify('Explorando Cuidados...')">Ver Produtos</button></div>
-        <div class="card"><h2>Clientes</h2><p>Veja as fotos de quem já comprou!</p></div>
-    </div>
-
-    <!-- Produto Exemplo -->
-    <div class="grid" style="margin-top: 20px;">
-        <div class="card">
-            <h3>Batom Matte Velvet</h3>
-            <p>Alta hidratação (4g). Uso diário.</p>
-            <div id="q-1" style="margin: 10px 0;">
-                <button onclick="changeQty('q-1', -1)">-</button>
-                <span id="val-q-1" style="margin: 0 10px;">0</span>
-                <button onclick="changeQty('q-1', 1)">+</button>
-            </div>
-            <button class="btn-main" onclick="addToCart('Batom Matte Velvet', 89.90, 'q-1')">Adicionar ao Carrinho</button>
+            <!-- Adicione mais cards aqui -->
         </div>
     </div>
 
-    <div id="side-cart">
-        <button onclick="toggleCart()" style="background: none; border: none; cursor: pointer;">Fechar X</button>
-        <h2>Seu Carrinho</h2>
-        <div id="cart-list"></div>
-        <button class="btn-main" style="width: 100%; margin-top: 20px;" onclick="finalizar()">Finalizar no WhatsApp</button>
+    <!-- Seção de Produtos (Inicialmente oculta) -->
+    <div id="makes" class="container section">
+        <button onclick="showSection('main-content')">← Voltar</button>
+        <h2>Coleção Makes</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Batom Velvet</h3>
+                <p>R$ 89,90</p>
+                <div class="qty-input">
+                    <button onclick="changeQty('b1', -1)">-</button>
+                    <span id="qty-b1">0</span>
+                    <button onclick="changeQty('b1', 1)">+</button>
+                </div>
+                <button class="btn-premium" onclick="addToCart('Batom Velvet', 89.90, 'qty-b1')">Adicionar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="cart-sidebar">
+        <h2 style="color: var(--rose);">Seu Carrinho</h2>
+        <div id="cart-items"></div>
+        <button class="btn-premium" style="width:100%; margin-top:20px;" onclick="checkout()">Finalizar Pedido</button>
     </div>
 
     <script>
-        let cart = [];
-        function toggleCart() { document.body.classList.toggle('cart-open'); }
-        
-        function notify(msg) {
-            let el = document.getElementById('notification');
-            el.innerText = msg;
-            el.style.display = 'block';
-            setTimeout(() => el.style.display = 'none', 2000);
+        function showSection(id) {
+            document.querySelectorAll('.container').forEach(s => s.style.display = 'none');
+            document.getElementById(id).style.display = 'block';
         }
-
+        
         function changeQty(id, delta) {
-            let el = document.getElementById('val-'+id);
+            let el = document.getElementById('qty-'+id);
             el.innerText = Math.max(0, parseInt(el.innerText) + delta);
         }
 
+        let cart = [];
         function addToCart(nome, preco, qId) {
-            let qtd = parseInt(document.getElementById('val-'+qId).innerText);
-            if(qtd > 0) {
-                cart.push({nome, preco, qtd});
+            let q = parseInt(document.getElementById(qId).innerText);
+            if(q > 0) {
+                cart.push({nome, q});
                 renderCart();
-                notify("Produto adicionado ao carrinho! ✨");
-                toggleCart();
-            } else {
-                notify("Escolha uma quantidade!");
+                document.body.classList.add('cart-open');
             }
         }
 
         function renderCart() {
-            document.getElementById('cart-list').innerHTML = cart.map(i => `<p>${i.qtd}x ${i.nome} <button onclick="cart=[]; renderCart()">🗑️</button></p>`).join('');
+            document.getElementById('cart-items').innerHTML = cart.map(i => `<p>${i.q}x ${i.nome}</p>`).join('');
         }
 
-        function finalizar() {
-            let msg = "Olá, gostaria de finalizar meu pedido: " + cart.map(i => i.qtd + "x " + i.nome).join(", ");
-            window.open("https://wa.me/5511993610210?text=" + encodeURIComponent(msg));
+        function checkout() {
+            let text = "✨ *Novo Pedido Belinna Store*\n\n";
+            cart.forEach(i => text += `• ${i.q}x ${i.nome}\n`);
+            text += "\nAguardo confirmação! Obrigada.";
+            window.open(`https://wa.me/5511993610210?text=${encodeURIComponent(text)}`);
         }
     </script>
 </body>
