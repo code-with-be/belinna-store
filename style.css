@@ -28,7 +28,7 @@ body {
 
 /* ========================================================
    2. HEADER & LOGO (PREMIUM)
-   ======================================================= */
+   ======================================================== */
 header {
     text-align: center;
     padding: 40px 20px 20px 20px;
@@ -94,16 +94,22 @@ header p {
     background-color: var(--primary-color);
 }
 
-/* Container das Abas */
+/* Container das Abas (Transição suave e visibilidade corrigida) */
 .tab-content {
     display: none;
     max-width: 1200px;
     margin: 40px auto;
     padding: 0 20px;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 .tab-content.active {
-    display: block;
+    display: block !important;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* ========================================================
@@ -407,7 +413,7 @@ header p {
 }
 
 /* ========================================================
-   7. NOVO: SELETOR DE QUANTIDADE DENTRO DO CARRINHO
+   7. SELETOR DE QUANTIDADE DENTRO DO CARRINHO
    ======================================================== */
 .cart-item-qty-selector {
     display: flex;
@@ -464,7 +470,7 @@ header p {
 .cart-floating-btn {
     position: fixed;
     bottom: 30px;
-    left: 30px; /* Alinhado à esquerda conforme layout do rodapé */
+    left: 30px;
     width: 60px;
     height: 60px;
     background-color: #111111;
@@ -486,7 +492,6 @@ header p {
     background-color: #222;
 }
 
-/* Bolinha vermelha indicadora de quantidade */
 .cart-badge {
     position: absolute;
     top: -5px;
@@ -505,7 +510,29 @@ header p {
 }
 
 /* ========================================================
-   9. RODAPÉ (FOOTER)
+   9. CARDS DO MENU PRINCIPAL (GRID DA HOME)
+   ======================================================== */
+.menu-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 35px 25px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.menu-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* ========================================================
+   10. RODAPÉ (FOOTER)
    ======================================================== */
 footer {
     background-color: #111;
